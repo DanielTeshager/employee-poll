@@ -1,65 +1,69 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
+import { saveQuestion } from "../redux/auth";
 
-const NewPoll = ({ addPoll }) => {
-	const [option1, setOption1] = useState("");
-	const [option2, setOption2] = useState("");
-	const navigate = useNavigate();
+const NewPoll = ({ currentUser, saveQuestion }) => {
+	const [optionOne, setOptionOne] = useState("");
+	const [optionTwo, setOptionTwo] = useState("");
 
-	const handleOption1Change = (event) => {
-		setOption1(event.target.value);
+	const handleOptionOneChange = (event) => {
+		setOptionOne(event.target.value);
 	};
 
-	const handleOption2Change = (event) => {
-		setOption2(event.target.value);
+	const handleOptionTwoChange = (event) => {
+		setOptionTwo(event.target.value);
 	};
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
-		// Create new poll object
-		const poll = {
-			question: "Would you rather:",
-			option1,
-			option2,
+		const question = {
+			optionOneText: optionOne,
+			optionTwoText: optionTwo,
+			author: currentUser,
 		};
 
-		// Call addPoll function to add the new poll
-		addPoll(poll);
+		saveQuestion(question, currentUser);
 
-		// Redirect to home page after form submission
-		navigate("/");
+		// Reset the form
+		setOptionOne("");
+		setOptionTwo("");
 	};
 
 	return (
 		<div>
 			<h2>Create a New Poll</h2>
 			<form onSubmit={handleSubmit}>
-				<div>
-					<p>Would you rather:</p>
-				</div>
-				<div>
-					<label htmlFor="option1">Option 1: </label>
+				<label>
+					Option One:
 					<input
 						type="text"
-						id="option1"
-						value={option1}
-						onChange={handleOption1Change}
+						value={optionOne}
+						onChange={handleOptionOneChange}
 					/>
-				</div>
-				<div>
-					<label htmlFor="option2">Option 2: </label>
+				</label>
+				<br />
+				<label>
+					Option Two:
 					<input
 						type="text"
-						id="option2"
-						value={option2}
-						onChange={handleOption2Change}
+						value={optionTwo}
+						onChange={handleOptionTwoChange}
 					/>
-				</div>
+				</label>
+				<br />
 				<button type="submit">Submit</button>
 			</form>
 		</div>
 	);
 };
 
-export default NewPoll;
+const mapStateToProps = (state) => ({
+	currentUser: state.currentUser,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	saveQuestion: (question, author) => dispatch(saveQuestion(question, author)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewPoll);

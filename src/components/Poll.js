@@ -1,14 +1,27 @@
 import React from "react";
+import { connect } from "react-redux";
 
-const Poll = () => {
-	// TODO: Implement poll detail view, voting, and results
+const Poll = ({ question }) => {
+	if (!question) {
+		return <p>Question not found.</p>;
+	}
 
 	return (
 		<div>
-			<h2>Poll</h2>
-			{/* Display poll question, options, and handle voting/results */}
+			<h3>Would you rather?</h3>
+			<p>{question.optionOne.text}</p>
+			<p>{question.optionTwo.text}</p>
 		</div>
 	);
 };
 
-export default Poll;
+const mapStateToProps = (state, ownProps) => {
+	const { question_id } = ownProps;
+	const { questions } = state.auth;
+
+	return {
+		question: questions[question_id],
+	};
+};
+
+export default connect(mapStateToProps)(Poll);

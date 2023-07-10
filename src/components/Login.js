@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { login } from "../redux/auth";
 
 const Login = ({ users, handleLogin }) => {
 	const [selectedUser, setSelectedUser] = useState("");
@@ -32,4 +34,12 @@ const Login = ({ users, handleLogin }) => {
 	);
 };
 
-export default Login;
+const mapStateToProps = (state) => ({
+	users: state.auth.users,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	handleLogin: (userId) => dispatch(login(userId)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

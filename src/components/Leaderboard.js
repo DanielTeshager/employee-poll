@@ -1,14 +1,32 @@
 import React from "react";
+import { connect } from "react-redux";
 
-const Leaderboard = () => {
-	// TODO: Fetch and display user stats
+const Leaderboard = ({ users }) => {
+	const sortedUsers = Object.values(users).sort(
+		(a, b) =>
+			b.questions.length +
+			Object.keys(b.answers).length -
+			(a.questions.length + Object.keys(a.answers).length)
+	);
 
 	return (
 		<div>
 			<h2>Leaderboard</h2>
-			{/* Display list of users and their stats */}
+			<ul>
+				{sortedUsers.map((user) => (
+					<li key={user.id}>
+						<p>Name: {user.name}</p>
+						<p>Questions asked: {user.questions.length}</p>
+						<p>Questions answered: {Object.keys(user.answers).length}</p>
+					</li>
+				))}
+			</ul>
 		</div>
 	);
 };
 
-export default Leaderboard;
+const mapStateToProps = (state) => ({
+	users: state.auth.users,
+});
+
+export default connect(mapStateToProps)(Leaderboard);

@@ -1,20 +1,30 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
+import { logout } from "../redux/auth";
 
 const Navbar = ({ currentUser, handleLogout }) => {
 	return (
 		<nav>
 			<ul>
 				<li>
-					<Link to="/">Dashboard</Link>
+					<NavLink to="/" activeClassName="active" exact>
+						Dashboard
+					</NavLink>
 				</li>
 				<li>
-					<Link to="/newpoll">New Poll</Link>
+					<NavLink to="/newpoll" activeClassName="active">
+						New Poll
+					</NavLink>
 				</li>
 				<li>
-					<Link to="/leaderboard">Leaderboard</Link>
+					<NavLink to="/leaderboard" activeClassName="active">
+						Leaderboard
+					</NavLink>
 				</li>
-				<li>{currentUser && <span>Welcome, {currentUser.name}!</span>}</li>
+				<li>
+					<span>Logged in as {currentUser}</span>
+				</li>
 				<li>
 					<button onClick={handleLogout}>Logout</button>
 				</li>
@@ -23,4 +33,12 @@ const Navbar = ({ currentUser, handleLogout }) => {
 	);
 };
 
-export default Navbar;
+const mapStateToProps = (state) => ({
+	currentUser: state.auth.currentUser,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	handleLogout: () => dispatch(logout()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
