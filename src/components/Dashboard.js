@@ -5,7 +5,10 @@ import { Link } from "react-router-dom";
 const Dashboard = ({ questions, currentUser }) => {
 	const [showAnswered, setShowAnswered] = useState(false);
 
-	// Filter and sort the question IDs based on answered and unanswered polls
+	const toggleQuestions = () => {
+		setShowAnswered(!showAnswered);
+	};
+
 	const filteredQuestionIds = Object.keys(questions)
 		.filter((id) => {
 			const question = questions[id];
@@ -18,10 +21,6 @@ const Dashboard = ({ questions, currentUser }) => {
 				  );
 		})
 		.sort((a, b) => questions[b].timestamp - questions[a].timestamp);
-
-	const toggleQuestions = () => {
-		setShowAnswered(!showAnswered);
-	};
 
 	return (
 		<div>
@@ -37,6 +36,8 @@ const Dashboard = ({ questions, currentUser }) => {
 					</li>
 				))}
 			</ul>
+			<Link to="/leaderboard">Leaderboard</Link>
+			<Link to="/newpoll">Create New Poll</Link>
 		</div>
 	);
 };
