@@ -24,29 +24,11 @@ const logout = () => ({
 	type: "LOGOUT",
 });
 
-const saveQuestion = (question) => {
-	return (dispatch, getState) => {
-		const { currentUser } = getState().auth;
-
-		return _saveQuestion({
-			...question,
-			author: currentUser,
-		}).then((formattedQuestion) => {
-			dispatch({
-				type: "SAVE_QUESTION",
-				question: formattedQuestion,
-			});
-			dispatch(addQuestionToUser(formattedQuestion));
-		});
-	};
-};
-
-const addQuestionToUser = (question) => {
-	return {
-		type: "ADD_QUESTION_TO_USER",
-		question,
-	};
-};
+const saveQuestion = (question, author) => ({
+	type: "SAVE_QUESTION",
+	question,
+	author,
+});
 
 const saveQuestionAnswer = (authedUser, qid, answer) => ({
 	type: "SAVE_QUESTION_ANSWER",
@@ -65,9 +47,9 @@ export {
 };
 
 const initialState = {
+	users: {},
 	questions: {},
 	currentUser: null,
-	users: {},
 };
 
 const authReducer = (state = initialState, action) => {
@@ -93,12 +75,12 @@ const authReducer = (state = initialState, action) => {
 				currentUser: null,
 			};
 		case "SAVE_QUESTION":
-			const { question } = action;
+			const { question, author } = action;
 			return {
 				...state,
 				questions: {
 					...state.questions,
-					[question.id]: question,
+					[question.id]: { ...question, author },
 				},
 			};
 		case "SAVE_QUESTION_ANSWER":
@@ -123,20 +105,6 @@ const authReducer = (state = initialState, action) => {
 							...state.questions[qid][answer],
 							votes: state.questions[qid][answer].votes.concat(authedUser),
 						},
-					},
-				},
-			};
-		case "ADD_QUESTION_TO_USER":
-			const { question: newQuestion } = action;
-			return {
-				...state,
-				users: {
-					...state.users,
-					[newQuestion.author]: {
-						...state.users[newQuestion.author],
-						questions: state.users[newQuestion.author].questions.concat(
-							newQuestion.id
-						),
 					},
 				},
 			};

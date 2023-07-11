@@ -23,7 +23,6 @@ const NewPoll = ({ currentUser, saveQuestion }) => {
 			author: currentUser,
 		};
 
-		console.log("New Question:", question);
 		saveQuestion(question, currentUser);
 
 		// Reset the form
@@ -60,7 +59,7 @@ const NewPoll = ({ currentUser, saveQuestion }) => {
 };
 
 const mapStateToProps = (state) => ({
-	currentUser: state.auth.currentUser,
+	currentUser: state.currentUser,
 });
 
 const mapDispatchToProps = (dispatch) => ({
