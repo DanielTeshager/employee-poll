@@ -9,13 +9,18 @@ const Dashboard = ({ questions, currentUser }) => {
 	const filteredQuestionIds = Object.keys(questions)
 		.filter((id) => {
 			const question = questions[id];
-			return showAnswered
-				? question.optionOne.votes.includes(currentUser) ||
-						question.optionTwo.votes.includes(currentUser)
-				: !(
-						question.optionOne.votes.includes(currentUser) ||
-						question.optionTwo.votes.includes(currentUser)
-				  );
+			return (
+				question &&
+				question.optionOne &&
+				question.optionTwo &&
+				(showAnswered
+					? question.optionOne.votes.includes(currentUser) ||
+					  question.optionTwo.votes.includes(currentUser)
+					: !(
+							question.optionOne.votes.includes(currentUser) ||
+							question.optionTwo.votes.includes(currentUser)
+					  ))
+			);
 		})
 		.sort((a, b) => questions[b].timestamp - questions[a].timestamp);
 
