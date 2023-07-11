@@ -7,6 +7,7 @@ import NewPoll from "./components/NewPoll";
 import PollDetails from "./components/PollDetails";
 import Leaderboard from "./components/Leaderboard";
 import Login from "./components/Login";
+import NotFound from "./components/NotFound";
 import { handleInitialData, login, logout } from "./redux/auth";
 
 const App = ({
@@ -31,6 +32,7 @@ const App = ({
 							<Route path="/newpoll" element={<NewPoll />} />
 							<Route path="/leaderboard" element={<Leaderboard />} />
 							<Route path="/questions/:question_id" element={<PollDetails />} />
+							<Route path="*" element={<NotFound />} />
 						</Routes>
 					</>
 				) : (
