@@ -165,12 +165,8 @@ export function formatQuestion({ optionOneText, optionTwoText, author }) {
 
 export function _saveQuestion(question) {
 	return new Promise((resolve, reject) => {
-		if (
-			!question.optionOneText ||
-			!question.optionTwoText ||
-			!question.author
-		) {
-			throw new Error("Error: Invalid question data");
+		if (!question.optionOne || !question.optionTwo || !question.author) {
+			reject("Please provide optionOne, optionTwo, and author");
 		}
 
 		const formattedQuestion = formatQuestion(question);
