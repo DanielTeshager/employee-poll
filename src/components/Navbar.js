@@ -13,8 +13,8 @@ const Navbar = ({ currentUser, handleLogout }) => {
 					</NavLink>
 				</li>
 				<li>
-					<NavLink to="/newpoll" activeClassName="active">
-						New Poll
+					<NavLink to="/add" activeClassName="active">
+						Add
 					</NavLink>
 				</li>
 				<li>

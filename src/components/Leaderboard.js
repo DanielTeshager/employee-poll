@@ -15,9 +15,19 @@ const Leaderboard = ({ users }) => {
 			<ul>
 				{sortedUsers.map((user) => (
 					<li key={user.id}>
-						<p>Name: {user.name}</p>
-						<p>Questions asked: {user.questions.length}</p>
-						<p>Questions answered: {Object.keys(user.answers).length}</p>
+						<img
+							src={user.avatarURL}
+							alt={user.name}
+							style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+						/>
+						<div>
+							<h3>{user.name}</h3>
+							<p>
+								Questions Asked: {user.questions.length}
+								<br />
+								Questions Answered: {Object.keys(user.answers).length}
+							</p>
+						</div>
 					</li>
 				))}
 			</ul>

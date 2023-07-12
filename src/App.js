@@ -29,7 +29,7 @@ const App = ({
 						<Navbar currentUser={currentUser} handleLogout={handleLogout} />
 						<Routes>
 							<Route path="/" element={<Dashboard />} />
-							<Route path="/newpoll" element={<NewPoll />} />
+							<Route path="/add" element={<NewPoll />} />
 							<Route path="/leaderboard" element={<Leaderboard />} />
 							<Route path="/questions/:question_id" element={<PollDetails />} />
 							<Route path="*" element={<NotFound />} />

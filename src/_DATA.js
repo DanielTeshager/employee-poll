@@ -3,7 +3,7 @@ let users = {
 		id: "sarahedo",
 		password: "password123",
 		name: "Sarah Edo",
-		avatarURL: null,
+		avatarURL: "https://avatars.dicebear.com/api/croodles/stefan.svg",
 		answers: {
 			"8xf0y6ziyjabvozdd253nd": "optionOne",
 			"6ni6ok3ym7mf1p33lnez": "optionOne",
@@ -16,7 +16,7 @@ let users = {
 		id: "tylermcginnis",
 		password: "abc321",
 		name: "Tyler McGinnis",
-		avatarURL: null,
+		avatarURL: "https://avatars.dicebear.com/api/bottts/stefan.svg",
 		answers: {
 			vthrdm985a262al8qx3do: "optionOne",
 			xj352vofupe1dqz9emx13r: "optionTwo",
@@ -27,7 +27,7 @@ let users = {
 		id: "mtsamis",
 		password: "xyz123",
 		name: "Mike Tsamis",
-		avatarURL: null,
+		avatarURL: "https://avatars.dicebear.com/api/open-peeps/stefan.svg",
 		answers: {
 			xj352vofupe1dqz9emx13r: "optionOne",
 			vthrdm985a262al8qx3do: "optionTwo",
@@ -39,7 +39,7 @@ let users = {
 		id: "zoshikanlu",
 		password: "pass246",
 		name: "Zenobia Oshikanlu",
-		avatarURL: null,
+		avatarURL: "https://robohash.org/stefan-three",
 		answers: {
 			xj352vofupe1dqz9emx13r: "optionOne",
 		},
@@ -128,7 +128,7 @@ let questions = {
 	},
 };
 
-function generateUID() {
+export function generateUID() {
 	return (
 		Math.random().toString(36).substring(2, 15) +
 		Math.random().toString(36).substring(2, 15)
@@ -170,7 +170,7 @@ export function _saveQuestion(question) {
 			!question.optionTwoText ||
 			!question.author
 		) {
-			reject("Please provide optionOneText, optionTwoText, and author");
+			throw new Error("Error: Invalid question data");
 		}
 
 		const formattedQuestion = formatQuestion(question);
@@ -187,11 +187,27 @@ export function _saveQuestion(question) {
 
 export function _saveQuestionAnswer({ authedUser, qid, answer }) {
 	return new Promise((resolve, reject) => {
-		if (!authedUser || !qid || !answer) {
-			reject("Please provide authedUser, qid, and answer");
-		}
-
 		setTimeout(() => {
+			if (!authedUser || !qid || !answer) {
+				console.error("Invalid parameters:", { authedUser, qid, answer });
+				reject(new Error("Please provide authedUser, qid, and answer"));
+				return;
+			}
+
+			if (
+				!users.hasOwnProperty(authedUser) ||
+				!questions.hasOwnProperty(qid) ||
+				!questions[qid][answer]
+			) {
+				console.error("Invalid user, question, or answer:", {
+					authedUser,
+					qid,
+					answer,
+				});
+				reject(new Error("Invalid user, question, or answer"));
+				return;
+			}
+
 			users = {
 				...users,
 				[authedUser]: {

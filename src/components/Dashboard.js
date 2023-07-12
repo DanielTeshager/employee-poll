@@ -36,8 +36,6 @@ const Dashboard = ({ questions, currentUser }) => {
 					</li>
 				))}
 			</ul>
-			<Link to="/leaderboard">Leaderboard</Link>
-			<Link to="/newpoll">Create New Poll</Link>
 		</div>
 	);
 };

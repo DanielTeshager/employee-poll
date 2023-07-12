@@ -3,7 +3,24 @@ import {
 	_getQuestions,
 	_saveQuestion,
 	_saveQuestionAnswer,
+	generateUID,
 } from "../_DATA";
+
+function formatQuestion({ optionOneText, optionTwoText, author }) {
+	return {
+		id: generateUID(),
+		timestamp: Date.now(),
+		author,
+		optionOne: {
+			votes: [],
+			text: optionOneText,
+		},
+		optionTwo: {
+			votes: [],
+			text: optionTwoText,
+		},
+	};
+}
 
 const setUsers = (users) => ({
 	type: "SET_USERS",
@@ -27,11 +44,12 @@ const logout = () => ({
 const saveQuestion = (question) => {
 	return (dispatch, getState) => {
 		const { currentUser } = getState().auth;
-
-		return _saveQuestion({
+		const formattedQuestion = formatQuestion({
 			...question,
 			author: currentUser,
-		}).then((formattedQuestion) => {
+		});
+
+		return _saveQuestion(formattedQuestion).then(() => {
 			dispatch({
 				type: "SAVE_QUESTION",
 				question: formattedQuestion,
@@ -48,12 +66,18 @@ const addQuestionToUser = (question) => {
 	};
 };
 
-const saveQuestionAnswer = (authedUser, qid, answer) => ({
-	type: "SAVE_QUESTION_ANSWER",
-	authedUser,
-	qid,
-	answer,
-});
+const saveQuestionAnswer = (authedUser, qid, answer) => {
+	return (dispatch) => {
+		return _saveQuestionAnswer({ authedUser, qid, answer }).then(() => {
+			dispatch({
+				type: "SAVE_QUESTION_ANSWER",
+				authedUser,
+				qid,
+				answer,
+			});
+		});
+	};
+};
 
 export {
 	setUsers,
