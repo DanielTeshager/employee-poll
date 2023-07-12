@@ -1,6 +1,6 @@
 # Employee Polls
 
-Employee Polls is a web application that allows employees to participate in polls and share their opinions on various topics. It provides a user-friendly interface for creating polls, voting on them, and viewing the poll results. The application is built using React and Redux.
+Employee Polls is a web application that allows employees to participate in polls and share their opinions on various topics. It provide interface for creating polls, voting on them, and viewing the poll results. The application is built using React and Redux.
 
 ## Features
 

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { login } from "../redux/auth";
-import "@testing-library/jest-dom/extend-expect";
 
 const Login = ({ users, handleLogin }) => {
 	const [selectedUser, setSelectedUser] = useState("");
@@ -21,9 +20,6 @@ const Login = ({ users, handleLogin }) => {
 		<div>
 			<h2>Login</h2>
 			<form onSubmit={handleLoginSubmit}>
-				{/* add label for users */}
-				<label htmlFor="users">Select User</label>
-				<br></br>
 				<select value={selectedUser} onChange={handleUserSelect} id="users">
 					<option value="">Select User</option>
 					{Object.keys(users).map((userId) => (

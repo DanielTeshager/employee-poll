@@ -18,8 +18,12 @@ const App = ({
 	handleLogout,
 }) => {
 	useEffect(() => {
+		console.log("Inside useEffect");
 		handleInitialData();
 	}, [handleInitialData]);
+
+	console.log("currentUser:", currentUser);
+	console.log("users:", users);
 
 	return (
 		<Router>
