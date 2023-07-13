@@ -8,7 +8,7 @@ const Dashboard = ({ questions, currentUser }) => {
 	const toggleQuestions = () => {
 		setShowAnswered(!showAnswered);
 	};
-
+	console.log("Dashboard questions", questions);
 	const filteredQuestionIds = Object.keys(questions)
 		.filter((id) => {
 			const question = questions[id];
@@ -21,7 +21,6 @@ const Dashboard = ({ questions, currentUser }) => {
 				  );
 		})
 		.sort((a, b) => questions[b].timestamp - questions[a].timestamp);
-
 	return (
 		<div>
 			<h2>Dashboard</h2>
@@ -32,7 +31,9 @@ const Dashboard = ({ questions, currentUser }) => {
 			<ul>
 				{filteredQuestionIds.map((id) => (
 					<li key={id}>
-						<Link to={`/questions/${id}`}>{questions[id].optionOne.text}</Link>
+						<Link to={`/questions/${id}`}>
+							{questions[id].optionOne.text} or {questions[id].optionTwo.text}
+						</Link>
 					</li>
 				))}
 			</ul>

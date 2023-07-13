@@ -42,31 +42,33 @@ const logout = () => ({
 });
 
 const saveQuestion = (question) => {
+	console.log("question in auth:", question);
 	return (dispatch, getState) => {
 		const { currentUser } = getState().auth;
-		const formattedQuestion = formatQuestion({
-			...question,
-			author: currentUser,
-		});
 
-		return _saveQuestion(formattedQuestion).then(() => {
+		if (!question.author) {
+			question.author = currentUser;
+		}
+
+		return _saveQuestion(question).then((formattedQuestion) => {
 			dispatch({
 				type: "SAVE_QUESTION",
 				question: formattedQuestion,
 			});
-			dispatch(addQuestionToUser(formattedQuestion));
+			dispatch(addQuestionToUser(currentUser, formattedQuestion.id));
 		});
 	};
 };
 
-const addQuestionToUser = (question) => {
+const addQuestionToUser = (userId, questionId) => {
 	return {
 		type: "ADD_QUESTION_TO_USER",
-		question,
+		userId,
+		questionId,
 	};
 };
 
-const saveQuestionAnswer = (authedUser, qid, answer) => {
+const saveQuestionAnswer = ({ authedUser, qid, answer }) => {
 	return (dispatch) => {
 		return _saveQuestionAnswer({ authedUser, qid, answer }).then(() => {
 			dispatch({
@@ -151,16 +153,14 @@ const authReducer = (state = initialState, action) => {
 				},
 			};
 		case "ADD_QUESTION_TO_USER":
-			const { question: newQuestion } = action;
+			const { userId, questionId } = action;
 			return {
 				...state,
 				users: {
 					...state.users,
-					[newQuestion.author]: {
-						...state.users[newQuestion.author],
-						questions: state.users[newQuestion.author].questions.concat(
-							newQuestion.id
-						),
+					[userId]: {
+						...state.users[userId],
+						questions: [...state.users[userId].questions, questionId],
 					},
 				},
 			};

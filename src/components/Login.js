@@ -20,6 +20,7 @@ const Login = ({ users, handleLogin }) => {
 		<div>
 			<h2>Login</h2>
 			<form onSubmit={handleLoginSubmit}>
+				<label htmlFor="users">Select User</label>
 				<select value={selectedUser} onChange={handleUserSelect} id="users">
 					<option value="">Select User</option>
 					{Object.keys(users).map((userId) => (

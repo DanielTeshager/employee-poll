@@ -147,29 +147,32 @@ export function _getQuestions() {
 	});
 }
 
-export function formatQuestion({ optionOneText, optionTwoText, author }) {
+export function formatQuestion({ optionOne, optionTwo, author }) {
+	const id = generateUID();
 	return {
-		id: generateUID(),
+		id: id,
 		timestamp: Date.now(),
 		author,
 		optionOne: {
 			votes: [],
-			text: optionOneText,
+			text: optionOne.text,
 		},
 		optionTwo: {
 			votes: [],
-			text: optionTwoText,
+			text: optionTwo.text,
 		},
 	};
 }
 
 export function _saveQuestion(question) {
+	console.log("question:", question);
 	return new Promise((resolve, reject) => {
 		if (!question.optionOne || !question.optionTwo || !question.author) {
 			reject("Please provide optionOne, optionTwo, and author");
 		}
 
 		const formattedQuestion = formatQuestion(question);
+		console.log("formattedQuestion:", formattedQuestion);
 		setTimeout(() => {
 			questions = {
 				...questions,
@@ -177,11 +180,13 @@ export function _saveQuestion(question) {
 			};
 
 			resolve(formattedQuestion);
-		}, 1000);
+		});
 	});
 }
 
-export function _saveQuestionAnswer({ authedUser, qid, answer }) {
+export function _saveQuestionAnswer(answered) {
+	const { authedUser, qid, answer } = answered;
+	console.log("answered:", answered);
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {
 			if (!authedUser || !qid || !answer) {
@@ -200,6 +205,7 @@ export function _saveQuestionAnswer({ authedUser, qid, answer }) {
 					qid,
 					answer,
 				});
+				console.error("questions:", questions.hasOwnProperty(qid));
 				reject(new Error("Invalid user, question, or answer"));
 				return;
 			}
@@ -225,8 +231,9 @@ export function _saveQuestionAnswer({ authedUser, qid, answer }) {
 					},
 				},
 			};
-
+			console.log("users:", users);
+			console.log("questions:", questions);
 			resolve(true);
-		}, 500);
+		}, 1000);
 	});
 }

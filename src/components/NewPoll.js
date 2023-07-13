@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { saveQuestion } from "../redux/auth";
+import { useNavigate } from "react-router-dom";
 
 const NewPoll = ({ currentUser, saveQuestion }) => {
-	const [optionOne, setOptionOne] = useState("");
-	const [optionTwo, setOptionTwo] = useState("");
+	const [optionOneText, setOptionOne] = useState("");
+	const [optionTwoText, setOptionTwo] = useState("");
+	const navigate = useNavigate();
 
 	const handleOptionOneChange = (event) => {
 		setOptionOne(event.target.value);
@@ -17,14 +19,20 @@ const NewPoll = ({ currentUser, saveQuestion }) => {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 
-		if (optionOne.trim() === "" || optionTwo.trim() === "") {
+		if (optionOneText.trim() === "" || optionTwoText.trim() === "") {
 			// Handle the case when one or both options are empty
 			return;
 		}
 
 		const question = {
-			optionOneText: optionOne,
-			optionTwoText: optionTwo,
+			optionOne: {
+				text: optionOneText,
+				votes: [],
+			},
+			optionTwo: {
+				text: optionTwoText,
+				votes: [],
+			},
 			author: currentUser,
 		};
 
@@ -35,6 +43,9 @@ const NewPoll = ({ currentUser, saveQuestion }) => {
 		// Reset the form
 		setOptionOne("");
 		setOptionTwo("");
+
+		// Navigate to Dashboard
+		navigate("/");
 	};
 
 	return (
@@ -45,7 +56,7 @@ const NewPoll = ({ currentUser, saveQuestion }) => {
 					Option One:
 					<input
 						type="text"
-						value={optionOne}
+						value={optionOneText}
 						onChange={handleOptionOneChange}
 					/>
 				</label>
@@ -54,7 +65,7 @@ const NewPoll = ({ currentUser, saveQuestion }) => {
 					Option Two:
 					<input
 						type="text"
-						value={optionTwo}
+						value={optionTwoText}
 						onChange={handleOptionTwoChange}
 					/>
 				</label>

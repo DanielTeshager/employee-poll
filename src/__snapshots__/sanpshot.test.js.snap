@@ -13,7 +13,6 @@ exports[`Login renders correctly 1`] = `
     >
       Select User
     </label>
-    <br />
     <select
       id="users"
       onChange={[Function]}

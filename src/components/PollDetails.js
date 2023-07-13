@@ -6,6 +6,12 @@ import { saveQuestionAnswer } from "../redux/auth";
 const PollDetails = ({ questions, users, currentUser, saveQuestionAnswer }) => {
 	const { question_id } = useParams();
 	const question = questions[question_id];
+	//for new question the question Id is not present in the questions object so it will return undefined
+	//so we need to handle this case by checking if question_id is present in the questions object or not
+	//if not we need to get the question id from the questions object
+	const questionId = Object.keys(questions).includes(question_id)
+		? question_id
+		: Object.keys(questions)[Object.keys(questions).length - 1];
 
 	if (!question) {
 		return <p>Question not found.</p>;
@@ -22,8 +28,17 @@ const PollDetails = ({ questions, users, currentUser, saveQuestionAnswer }) => {
 	const userVote = users[currentUser].answers[question_id];
 
 	const handleVote = (selectedOption) => {
+		console.log("PollDetails output", {
+			authedUser: currentUser,
+			qid: question_id,
+			answer: selectedOption,
+		});
 		if (!userVote) {
-			saveQuestionAnswer(currentUser, question_id, selectedOption);
+			saveQuestionAnswer({
+				authedUser: currentUser,
+				qid: questionId,
+				answer: selectedOption,
+			});
 		}
 	};
 
@@ -63,8 +78,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	saveQuestionAnswer: (authedUser, qid, answer) =>
-		dispatch(saveQuestionAnswer(authedUser, qid, answer)),
+	saveQuestionAnswer: ({ authedUser, qid, answer }) =>
+		dispatch(saveQuestionAnswer({ authedUser, qid, answer })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PollDetails);
