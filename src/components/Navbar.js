@@ -8,19 +8,13 @@ const Navbar = ({ currentUser, handleLogout }) => {
 		<nav>
 			<ul>
 				<li>
-					<NavLink to="/" activeClassName="active" exact>
-						Dashboard
-					</NavLink>
+					<NavLink to="/">Dashboard</NavLink>
 				</li>
 				<li>
-					<NavLink to="/add" activeClassName="active">
-						Add
-					</NavLink>
+					<NavLink to="/add">Add</NavLink>
 				</li>
 				<li>
-					<NavLink to="/leaderboard" activeClassName="active">
-						Leaderboard
-					</NavLink>
+					<NavLink to="/leaderboard">Leaderboard</NavLink>
 				</li>
 				<li>
 					<span>Logged in as {currentUser}</span>

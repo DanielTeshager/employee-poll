@@ -3,24 +3,7 @@ import {
 	_getQuestions,
 	_saveQuestion,
 	_saveQuestionAnswer,
-	generateUID,
 } from "../_DATA";
-
-function formatQuestion({ optionOneText, optionTwoText, author }) {
-	return {
-		id: generateUID(),
-		timestamp: Date.now(),
-		author,
-		optionOne: {
-			votes: [],
-			text: optionOneText,
-		},
-		optionTwo: {
-			votes: [],
-			text: optionTwoText,
-		},
-	};
-}
 
 const setUsers = (users) => ({
 	type: "SET_USERS",
